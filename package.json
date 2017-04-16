@@ -1,5 +1,5 @@
 {
-  "name": "sns-api-server",
+  "name": "vue-sns-server",
   "version": "1.0.0",
   "description": "SNS RESTful api server",
   "main": "index.js",

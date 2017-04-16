@@ -75,7 +75,7 @@ User.methods.joiValidate = function joiValidate(obj,cb) { //使用joi验证
   return joi.validate(obj,schema,{allowUnknown:true},cb)
 }
 
-User.methods.validatePassword = function validatePassword(password) {
+User.methods.validatePassword = function validatePassword(password) { //使用bcrypt验证密码
   const user = this
 
   return new Promise((resolve, reject) => {
@@ -83,7 +83,6 @@ User.methods.validatePassword = function validatePassword(password) {
       if (err) {
         return reject(err)
       }
-      console.log('isMatch'+password+' '+user.password)
       resolve(isMatch)
     })
   })

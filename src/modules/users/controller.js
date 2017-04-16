@@ -1,7 +1,7 @@
 import User from '../../models/users'
 
 /**
- * @api {post} /users Create a new user
+ * @api {post} /users 注册
  * @apiPermission 所有人
  * @apiVersion 1.0.0
  * @apiName CreateUser
@@ -20,6 +20,7 @@ import User from '../../models/users'
  * @apiSuccess {String}   user.username  用户名,同时是个性链接地址
  * @apiSuccess {String}   user.email     电子邮箱地址
  * @apiSuccess {String}   user.nickname  用户昵称
+ * @apiSuccess {String}   user.status 用户状态
  *
  * @apiSuccessExample {json} 成功响应
  *     HTTP/1.1 200 OK
@@ -64,29 +65,36 @@ export async function createUser(ctx) {
 }
 
 /**
- * @api {get} /users Get all users
- * @apiPermission user
+ * @api {get} /users 获取所有用户信息
+ * @apiPermission admin
  * @apiVersion 1.0.0
  * @apiName GetUsers
  * @apiGroup Users
  *
- * @apiExample Example usage:
+ * @apiExample 用法示例
  * curl -H "Content-Type: application/json" -X GET localhost:5000/users
  *
- * @apiSuccess {Object[]} users           Array of user objects
- * @apiSuccess {ObjectId} users._id       User id
- * @apiSuccess {String}   users.name      User name
- * @apiSuccess {String}   users.username  User username
+ * @apiSuccess {Object[]} users           用户数组
+ * @apiSuccess {ObjectId} users._id       User Objectid
+ * @apiSuccess {String}   users.username  用户名,同时是个性链接地址
+ * @apiSuccess {String}   users.email  电子邮箱地址
+ * @apiSuccess {String}   users.nickname 用户昵称
+ * @apiSuccess {String}   user.status 用户状态
  *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "users": [{
- *          "_id": "56bd1da600a526986cf65c80"
- *          "name": "John Doe"
- *          "username": "johndoe"
- *       }]
- *     }
+ * @apiSuccessExample {json} 成功响应
+ *    HTTP/1.1 200 OK
+ *    {
+ *    "users": [
+ *        {
+ *          "_id": "58f0d22101d56b43587322ce",
+ *          "username": "bestie1",
+ *          "email": "bestie1@bestie.com",
+ *          "nickname": "BESTIE",
+ *          "__v": 0,
+ *          "status": 0
+ *        }
+ *      ]
+ *    }
  *
  * @apiUse TokenError
  */
@@ -98,7 +106,7 @@ export async function getUsers(ctx) {
 }
 
 /**
- * @api {get} /users/:id Get user by id
+ * @api {get} /users/:id 通过id获取单个用户信息
  * @apiPermission user
  * @apiVersion 1.0.0
  * @apiName GetUser
@@ -126,7 +134,7 @@ export async function getUsers(ctx) {
  */
 export async function getUser(ctx, next) {
   try {
-    const user = await User.findById(ctx.params.id, '-password')
+    const user = await User.findById(ctx.params.id, '-password -email -status')
     if (!user) {
       ctx.throw(404)
     }
