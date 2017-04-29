@@ -17,7 +17,7 @@ export async function ensureUser (ctx, next) {
     ctx.throw(err.message,401)
   }
 
-  ctx.state.user = await User.findById(decoded.id, '-password') //-password意为不包括password字段
+  ctx.state.user = await User.findOne({username:decoded.username}, '-password') //-password意为不包括password字段
   if (!ctx.state.user) {
     ctx.throw(401)
   }

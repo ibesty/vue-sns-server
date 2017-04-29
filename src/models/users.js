@@ -26,10 +26,17 @@ const User = new mongoose.Schema({
   nickname: {
     type: String,
     required: true
+  },
+  creationDate: {
+    type: Date,
+    required: true,
+    default: Date.now()
   }
 })
 
-User.pre('save', function preSave(next) {
+User.index({username:1,email:1}) //建立索引
+
+User.pre('save', function (next) {
   const user = this
 
   user.joiValidate(user,err=>{ //使用joi验证所有参数是否符合要求
@@ -70,7 +77,8 @@ User.methods.joiValidate = function joiValidate(obj,cb) { //使用joi验证
     username: joi.string().token().lowercase().min(4).max(20).required(),
     email: joi.string().email().lowercase().required(),
     password: joi.string().alphanum().min(8).max(20),
-    nickname: joi.string().min(4).max(20)
+    nickname: joi.string().min(4).max(20),
+    creationDate: joi.date()
   }
   return joi.validate(obj,schema,{allowUnknown:true},cb)
 }
@@ -92,7 +100,8 @@ User.methods.generateToken = function generateToken() {
   const user = this
 
   return jwt.sign({
-    id: user.id
+    id: user.id,
+    username: user.username
   }, config.token, {
     expiresIn: '7 days'
   })
