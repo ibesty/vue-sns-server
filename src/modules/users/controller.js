@@ -1,4 +1,5 @@
 import User from '../../models/users'
+import UserRelation from '../../models/userRelations'
 
 /**
  * @api {post} /users 注册
@@ -46,9 +47,17 @@ import User from '../../models/users'
  *     }
  */
 export async function createUser(ctx) {
-  const user = new User(ctx.request.body.user)
+  const user = new User(ctx.request.body.user), // 初始化user
+    userRelation = new UserRelation({
+      username: ctx.params.username
+    }), // 初始化user relation
+    post = new Post({
+      username: ctx.state.user.username
+    }) // 初始化post
+    user.creationDate = new Date()
   try {
     await user.save()
+    await userRelation.save()
   } catch (err) {
     ctx.throw(422, err.message)
   }
