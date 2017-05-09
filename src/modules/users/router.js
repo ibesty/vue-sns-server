@@ -21,7 +21,7 @@ export default [
   },
   {
     method: 'GET',
-    route: '/:id',
+    route: '/:username',
     handlers: [
       ensureUser,
       user.getUser

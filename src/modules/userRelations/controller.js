@@ -47,7 +47,7 @@ export async function getRelation(ctx, next) {
 	}
 */
 
-export async function updateRelation(ctx) {
+export async function follow(ctx) {
   try {
     const userRelation = ctx.body.userRelation //需要更新的用户关系数据
     const relationData = ctx.request.body.userRelation // body数据
@@ -99,10 +99,60 @@ export async function updateRelation(ctx) {
       userRelation
     }
   } catch (err) {
-
+    ctx.throw(422)
   }
 }
 
 /*
 	@api {delete} /user-relation/:username 取消对某人的关注
+
+  {
+    userRelation: {
+      "following" : { "username" : "username"}
+    }
+  }
 */
+
+export async function unfollow(ctx) {
+  try {
+    const userRelation = ctx.body.userRelation //需要更新的用户关系数据
+    const relationData = ctx.params.following // body数据
+    
+    console.log(relationData)
+    if (relationData) {
+      await UserRelation.findOneAndUpdate({
+        username: relationData
+      }, {
+        '$pull': {
+          'following': {
+            username: relationData
+          }
+        }
+      },err=>{
+        if (err) {
+          console.warn(err)
+        }
+      })
+
+      await UserRelation.findOneAndUpdate({
+        username: relationData
+      }, {
+        '$pull': {
+          'follower': {
+            username: ctx.state.user.username
+          }
+        }
+      },err=>{
+        if (err) {
+          console.warn(err)
+        }
+      })
+    }
+
+    ctx.body = {
+      userRelation
+    }
+  } catch (err) {
+    ctx.throw(422,err.message)
+  }
+}

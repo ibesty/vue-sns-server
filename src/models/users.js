@@ -77,8 +77,7 @@ User.methods.joiValidate = function joiValidate(obj,cb) { //使用joi验证
     username: joi.string().token().lowercase().min(4).max(20).required(),
     email: joi.string().email().lowercase().required(),
     password: joi.string().alphanum().min(8).max(20),
-    nickname: joi.string().min(4).max(20),
-    creationDate: joi.date()
+    nickname: joi.string().min(4).max(20)
   }
   return joi.validate(obj,schema,{allowUnknown:true},cb)
 }

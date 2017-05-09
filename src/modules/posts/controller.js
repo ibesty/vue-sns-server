@@ -2,7 +2,7 @@ import Post from '../../models/posts'
 import mongoose from 'mongoose'
 
 /*
- * @api {get} /posts/:username?start=0&limit=10
+ * @api {get} /posts/:username?page= 获取特定用户posts
  */
 export async function getPost(ctx) {
   try {
@@ -14,14 +14,17 @@ export async function getPost(ctx) {
       ctx.throw(404)
     }
 
-    if (!!ctx.request.query.start) { //如果带参数则返回特定数量的post
-      let start = parseInt(ctx.request.query.start)
-      let stop = parseInt(ctx.request.query.limit) + start
-      post = post.posts.slice(start, stop)
-    }
+    let start = (parseInt(ctx.request.query.page) - 1) * 10
+    let end = (parseInt(ctx.request.query.page) * 10 - 1)
+    let postCount = post.postCount
+    post = post.posts.reverse()
+    post = post.slice(start, end)
+
+    console.log(start+' '+end)
 
     ctx.body = {
-      post
+      post,
+      postCount
     }
   } catch (err) {
     if (err === 404 || err.name === 'CastError') {
@@ -86,11 +89,11 @@ export async function deletePost(ctx) {
 
     post.posts.id(ctx.params.id).remove()
 
-  	await post.save()
+    await post.save()
 
     ctx.body = 'removed'
 
   } catch (err) {
-		ctx.throw(404)
+    ctx.throw(404)
   }
 }

@@ -146,7 +146,7 @@ export async function getUsers(ctx) {
  */
 export async function getUser(ctx, next) {
   try {
-    const user = await User.findById(ctx.params.id, '-password -email -status')
+    const user = await User.findOne({username: ctx.params.username }, '-password -_v -creationDate -status')
     if (!user) {
       ctx.throw(404)
     }
@@ -211,6 +211,8 @@ export async function updateUser(ctx) {
   const user = ctx.body.user
 
   Object.assign(user, ctx.request.body.user)
+
+  
 
   await user.save()
 

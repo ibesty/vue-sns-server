@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser'
 import convert from 'koa-convert'
 import logger from 'koa-logger'
 import mongoose from 'mongoose'
-import session from 'koa-generic-session'
+//import session from 'koa-generic-session'
 import passport from 'koa-passport'
 import mount from 'koa-mount'
 import serve from 'koa-static'
@@ -19,10 +19,11 @@ mongoose.connect(config.database)
 
 app.use(convert(logger()))
 app.use(bodyParser())
-app.use(session())
+//app.use(session())
 app.use(errorMiddleware())
 
 app.use(convert(mount('/docs', serve(`${process.cwd()}/docs`))))
+app.use(convert(mount('/public', serve(`${process.cwd()}/public`))))
 
 require('../config/passport')
 app.use(passport.initialize())

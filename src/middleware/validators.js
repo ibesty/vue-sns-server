@@ -9,7 +9,7 @@ export async function ensureUser (ctx, next) {
   if (!token) {
     ctx.throw(401)
   }
-
+  
   let decoded = null
   try {
     decoded = verify(token, config.token)

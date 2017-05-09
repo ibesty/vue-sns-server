@@ -17,7 +17,16 @@ export default [
 		handlers: [
 			ensureUser,
 			userRelation.getRelation,
-			userRelation.updateRelation
+			userRelation.follow
+		]
+	},
+	{
+		method: 'DELETE',
+		route: '/:username/:following',
+		handlers: [
+			ensureUser,
+			userRelation.getRelation,
+			userRelation.unfollow
 		]
 	}
 ]
