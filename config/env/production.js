@@ -1,5 +1,5 @@
 export default {
-  session: 'secret-boilerplate-token',
-  token: 'secret-jwt-token',
-  database: 'mongodb://localhost:27017/koa2-boilerplate-prod'
+  session: 'bestie',
+  token: 'bestie',
+  database: 'mongodb://127.0.0.1:27017/sns'
 }

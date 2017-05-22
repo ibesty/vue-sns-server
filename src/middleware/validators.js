@@ -46,3 +46,13 @@ export async function ensureAdmin (ctx, next) {
 
   return next()
 }
+/*
+	{  
+	    "user" : {  
+	        "username": "bestie",  
+	        "email": "bestie@bestie.com",  
+	        "password": "12345678",  
+	        "nickname": "BESTIE"  
+	    }  
+	}  
+*/

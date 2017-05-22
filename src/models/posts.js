@@ -37,7 +37,7 @@ const PostContent = new mongoose.Schema({
   creationDate: {
     type: Date,
     required: true,
-    default: Date.now()
+    default: new Date()
   }
 })
 

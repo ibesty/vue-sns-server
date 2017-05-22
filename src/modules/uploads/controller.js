@@ -19,7 +19,7 @@ export async function uploadAvatar(ctx) {
 		files: 1
 	}
   })
-  export default upload.any()
+  return upload.any()
 }
 
 export async function uploadCover(ctx) {

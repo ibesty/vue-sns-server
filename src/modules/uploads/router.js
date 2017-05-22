@@ -10,29 +10,5 @@ export default [{
       ensureUser,
       upload.uploadAvatar
     ]
-  },
-  {
-    method: 'POST',
-    route: '/cover/:username',
-    handlers: [
-      ensureUser,
-      upload.uploadCover
-    ]
-  },
-  {
-    method: 'POST',
-    route: '/postimg/:username',
-    handlers: [
-      ensureUser,
-      upload.uploadPostImage
-    ]
-  },
-  {
-    method: 'POST',
-    route: '/postvideo/:username',
-    handlers: [
-      ensureUser,
-      upload.uploadPostVideo
-    ]
   }
 ]
